@@ -13,6 +13,7 @@ namespace MyApi.Controllers
     {
         private Dev_DissertationEntities db = new Dev_DissertationEntities();
 
+        [System.Web.Http.Route("api/Login/CheckUser")]
         [System.Web.Http.HttpPost]
         public ActionResult CheckUser([FromBody] LoginCheck login)
         {
@@ -38,6 +39,12 @@ namespace MyApi.Controllers
                            u.Active == active
                            select u;
 
+            if (loginSQL.Count() < 1)
+                return ReturnResult.ReturnNegativeLoginResult("Unsuccessful login, No account found.");
+
+            if (loginSQL.Count() > 1)
+                return ReturnResult.ReturnNegativeLoginResult("Unsuccessful login, More than one account found.");
+
             if (loginSQL.Count() == 1)
             {
                 loginCheck.Reason = "Successful Login";
@@ -53,22 +60,53 @@ namespace MyApi.Controllers
                 }
 
                 loginCheck.Active = activeInt;
-                return new JsonResult()
-                {
-                    Data = loginCheck,
-                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                };
+                return ReturnResult.ReturnPositiveLoginResult(loginCheck);
             }
             else
             {
-                LoginCheck incorrectLogin = new LoginCheck();
-                incorrectLogin.Reason = "Unsuccessful Login. Incorrect details supplied.";
-                return new JsonResult()
-                {
-                    Data = incorrectLogin,
-                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                };
+                return ReturnResult.ReturnNegativeLoginResult("Unsuccessful Login. Incorrect details supplied.");               
             }
+
+        }
+
+        [System.Web.Http.Route("api/Login/CreateUser")]
+        [System.Web.Http.HttpPost]
+        public HttpResponseMessage CreateUser([FromBody] LoginCheck login)
+        {
+            LoginCheck loginCheck = new LoginCheck();
+            loginCheck.Email = login.Email;
+            loginCheck.Password = login.Password;
+            loginCheck.Active = login.Active;
+            loginCheck.handle = login.handle;
+
+            if (loginCheck.Validated(loginCheck))
+            {
+                User user = new User();
+                user.Email = loginCheck.Email;
+                user.Password = loginCheck.Password;
+                user.Handle = loginCheck.handle;
+                user.Active = loginCheck.checkActiveLogin(loginCheck.Active);
+                                
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                //if (loginCheck.UserExists(user.Email)) //not working
+                //{
+                //    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, user);
+                //    return response;
+                //}
+                //else
+                //{
+                //    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "User record could not be found after registering. Internal Error");
+                //}    
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, user);
+                return response;
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error logging in");
+            } 
         }
     }
 }

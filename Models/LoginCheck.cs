@@ -15,7 +15,32 @@ namespace MyApi.Models
         public string Reason { get; set; }
         public LoginCheck()
         {
-            
+
+        }
+
+        internal bool Validated(LoginCheck login)
+        {
+            if (String.IsNullOrEmpty(login.Email) ||
+                String.IsNullOrEmpty(login.Password) ||
+                String.IsNullOrEmpty(login.handle))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        internal bool checkActiveLogin(int active) 
+        {
+            bool activeBool = false;
+            if (active == 1)
+                activeBool = true;
+
+            return activeBool;
+        }
+        internal bool UserExists(string email)
+        {
+            Dev_DissertationEntities db = new Dev_DissertationEntities();
+            return db.Users.Count(e => e.Email == email) > 0;
         }
     }
 }
