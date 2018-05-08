@@ -73,6 +73,7 @@ namespace MyApi.Controllers
         [System.Web.Http.HttpPost]
         public HttpResponseMessage CreateUser([FromBody] LoginCheck login)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             LoginCheck loginCheck = new LoginCheck();
             loginCheck.Email = login.Email;
             loginCheck.Password = login.Password;
@@ -86,26 +87,41 @@ namespace MyApi.Controllers
                 user.Password = loginCheck.Password;
                 user.Handle = loginCheck.handle;
                 user.Active = loginCheck.checkActiveLogin(loginCheck.Active);
-                                
+
+                if (loginCheck.UserExists(user.Email))
+                {
+                    loginCheck.Reason = "Email already exists";
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
+                    return response;
+                }
+                if (loginCheck.UserHandleExists(user.Handle))
+                {
+                    loginCheck.Reason = "Handle already exists.";
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
+                    return response;
+                }
+                    
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                //if (loginCheck.UserExists(user.Email)) //not working
-                //{
-                //    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, user);
-                //    return response;
-                //}
-                //else
-                //{
-                //    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "User record could not be found after registering. Internal Error");
-                //}    
-
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, user);
-                return response;
+                if (loginCheck.UserExists(user.Email)) 
+                {
+                    loginCheck.Reason = "User created successfully.";
+                    response = Request.CreateResponse(HttpStatusCode.Created, loginCheck);
+                    return response;
+                }
+                else
+                {
+                    loginCheck.Reason = "User record could not be found after registering. Internal Error";
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
+                    return response;
+                }
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error logging in");
+                loginCheck.Reason = "Error logging in.";
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
+                return response;
             } 
         }
     }

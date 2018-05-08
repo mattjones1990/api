@@ -42,5 +42,11 @@ namespace MyApi.Models
             Dev_DissertationEntities db = new Dev_DissertationEntities();
             return db.Users.Count(e => e.Email == email) > 0;
         }
+
+        internal bool UserHandleExists(string handle)
+        {
+            Dev_DissertationEntities db = new Dev_DissertationEntities();
+            return db.Users.Count(e => e.Handle == handle) > 0;
+        }
     }
 }
