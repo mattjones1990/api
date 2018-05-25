@@ -15,58 +15,89 @@ namespace MyApi.Controllers
 
         [System.Web.Http.Route("api/Login/CheckUser")]
         [System.Web.Http.HttpPost]
-        public ActionResult CheckUser([FromBody] LoginCheck login)
+        public HttpResponseMessage CheckUser([FromBody] LoginCheck login)
         {
-            //string extraCheck = "FAF3C5A4-D949-E811-811F-0CC47A480E0C";
-            //loginCheck.Email = Security.Decrypt(Security.Decrypt(login.Email, extraCheck), extraCheck);
-            //loginCheck.Password = Security.Decrypt(Security.Decrypt(login.Password, extraCheck), extraCheck);
-            LoginCheck loginCheck = new LoginCheck();
-            loginCheck.Email = login.Email;
-            loginCheck.Password = login.Password;
-            loginCheck.Active = login.Active;
-
+            HttpResponseMessage response = new HttpResponseMessage();
             bool active = false;
-
+ 
             if (login.Active == 1)
             {
                 active = true;
             }
-
-            var loginSQL = from u
+            //Check if the credentials are in Azure. Return True if they are (worked). Loading > HomePage. Or Login > Homepage.
+            if (login.Reason == "CheckIfSqliteInAzure")
+            {
+                var loginSQL = from u
                            in db.Users
-                           where u.Email == loginCheck.Email && 
-                           u.Password == loginCheck.Password &&
+                           where u.Email == login.Email &&
+                           u.Password == login.Password &&
                            u.Active == active
                            select u;
 
-            if (loginSQL.Count() < 1)
-                return ReturnResult.ReturnNegativeLoginResult("Unsuccessful login, No account found.");
-
-            if (loginSQL.Count() > 1)
-                return ReturnResult.ReturnNegativeLoginResult("Unsuccessful login, More than one account found.");
-
-            if (loginSQL.Count() == 1)
-            {
-                loginCheck.Reason = "Successful Login";
-                loginCheck.handle = login.handle;
-                loginCheck.Id = loginSQL.FirstOrDefault().UserId;
-                loginCheck.Email = loginSQL.FirstOrDefault().Email;
-                loginCheck.Password = loginSQL.FirstOrDefault().Password;
-
-                int activeInt = 0;
-                if (loginSQL.FirstOrDefault().Active == true)
+                if (loginSQL.Count() < 1)
                 {
-                    activeInt = 1;
+                    login.Worked = false;
+                    login.Reason = "Less than one record returned.";
+                }
+                else if (loginSQL.Count() > 1)
+                {
+                    login.Worked = false;
+                    login.Reason = "More than one record returned.";
+                }
+                else if (loginSQL.Count() == 1)
+                {
+                    login.Worked = true;
+                    login.Reason = "One record found.";
+                }
+                else
+                {
+                    login.Worked = false;
+                    login.Reason = "Major login issue.";
                 }
 
-                loginCheck.Active = activeInt;
-                return ReturnResult.ReturnPositiveLoginResult(loginCheck);
+                response = Request.CreateResponse(HttpStatusCode.OK, login);
+                return response;
+            }
+
+            //Check if the credentials are stored on the Azure Db, if not, go to disclaimer page...Register > Login or Disclaimer
+            else if (login.Reason == "CheckIfSqliteInAzureForDisclaimer")
+            {
+                var loginSQLEmailCheck = from u
+                           in db.Users
+                              
+                               where u.Email == login.Email
+                               select u;
+
+                var loginSQLHandleCheck = from u
+                            in db.Users
+                            where u.Handle == login.Handle
+                            select u;
+
+                if (loginSQLEmailCheck.Count() > 0)
+                {
+                    login.Worked = false;
+                    login.Reason = "Email address already exists.";
+                }
+                else if (loginSQLHandleCheck.Count() > 0)
+                {
+                    login.Worked = false;
+                    login.Reason = "Handle already exists.";
+                }
+                else
+                {
+                    login.Worked = true;
+                    login.Reason = "Details not found.";
+                }
+
+                response = Request.CreateResponse(HttpStatusCode.OK, login);
+                return response;
             }
             else
             {
-                return ReturnResult.ReturnNegativeLoginResult("Unsuccessful Login. Incorrect details supplied.");               
+                login.Reason = "Nothing has happened, no legit reason input.";
             }
-
+            response = Request.CreateResponse(HttpStatusCode.OK, login);
+            return response;
         }
 
         [System.Web.Http.Route("api/Login/CreateUser")]
@@ -75,18 +106,26 @@ namespace MyApi.Controllers
         {
             HttpResponseMessage response = new HttpResponseMessage();
             LoginCheck loginCheck = new LoginCheck();
-            loginCheck.Email = login.Email;
-            loginCheck.Password = login.Password;
-            loginCheck.Active = login.Active;
-            loginCheck.handle = login.handle;
-
-            if (loginCheck.Validated(loginCheck))
+            if (loginCheck.Validated(login))
             {
                 User user = new User();
-                user.Email = loginCheck.Email;
-                user.Password = loginCheck.Password;
-                user.Handle = loginCheck.handle;
-                user.Active = loginCheck.checkActiveLogin(loginCheck.Active);
+                user.Email = login.Email;
+                user.Password = login.Password;
+                user.Handle = login.Handle;
+                user.Active = login.checkActiveLogin(login.Active);
+                user.UserGuid = Guid.NewGuid();
+
+                var loginSQLGuidCheck = from u
+                           in db.Users
+                           where u.UserGuid == user.UserGuid
+                           select u;
+
+                if (loginSQLGuidCheck.Count() > 0)
+                {
+                    loginCheck.Reason = "GUID already exists";
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
+                    return response;
+                }
 
                 if (loginCheck.UserExists(user.Email))
                 {
@@ -100,11 +139,11 @@ namespace MyApi.Controllers
                     response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
                     return response;
                 }
-                    
+
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                if (loginCheck.UserExists(user.Email)) 
+                if (loginCheck.UserExists(user.Email))
                 {
                     loginCheck.Reason = "User created successfully.";
                     response = Request.CreateResponse(HttpStatusCode.Created, loginCheck);
@@ -119,10 +158,10 @@ namespace MyApi.Controllers
             }
             else
             {
-                loginCheck.Reason = "Error logging in.";
+                loginCheck.Reason = "Invalid credentials entered."; //Should never get past front end validation.
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
                 return response;
-            } 
+            }
         }
     }
 }

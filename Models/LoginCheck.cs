@@ -9,10 +9,12 @@ namespace MyApi.Models
     {
         public int Id { get; set; }
         public string Email { get; set; }
-        public string handle { get; set; }
+        public string Handle { get; set; }
         public string Password { get; set; }
         public int Active { get; set; }
         public string Reason { get; set; }
+        public bool Worked { get; set; }
+
         public LoginCheck()
         {
 
@@ -22,7 +24,7 @@ namespace MyApi.Models
         {
             if (String.IsNullOrEmpty(login.Email) ||
                 String.IsNullOrEmpty(login.Password) ||
-                String.IsNullOrEmpty(login.handle))
+                String.IsNullOrEmpty(login.Handle))
             {
                 return false;
             }

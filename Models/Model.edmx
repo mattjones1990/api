@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Dev_DissertationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exercise">
+          <Key>
+            <PropertyRef Name="ExerciseId" />
+          </Key>
+          <Property Name="ExerciseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exercises">
+          <Key>
+            <PropertyRef Name="ExercisesId" />
+          </Key>
+          <Property Name="ExercisesId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MuscleGroup">
+          <Key>
+            <PropertyRef Name="MuscleGroupId" />
+          </Key>
+          <Property Name="MuscleGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileId" />
+          </Key>
+          <Property Name="ProfileId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Bio" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="FavouriteExercise" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Set">
+          <Key>
+            <PropertyRef Name="SetId" />
+          </Key>
+          <Property Name="SetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar(max)" Nullable="false" />
+          <Property Name="Handle" Type="varchar(max)" Nullable="false" />
+          <Property Name="Password" Type="varchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="UserGuid" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Workout">
+          <Key>
+            <PropertyRef Name="WorkoutId" />
+          </Key>
+          <Property Name="WorkoutId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Profile__UserId__1332DBDC">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Dev_DissertationModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exercise" EntityType="Self.Exercise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exercises" EntityType="Self.Exercises" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MuscleGroup" EntityType="Self.MuscleGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profile" EntityType="Self.Profile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Set" EntityType="Self.Set" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Workout" EntityType="Self.Workout" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Profile__UserId__1332DBDC" Association="Self.FK__Profile__UserId__1332DBDC">
+            <End Role="User" EntitySet="User" />
+            <End Role="Profile" EntitySet="Profile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Dev_DissertationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Exercise">
+          <Key>
+            <PropertyRef Name="ExerciseId" />
+          </Key>
+          <Property Name="ExerciseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Exercis">
+          <Key>
+            <PropertyRef Name="ExercisesId" />
+          </Key>
+          <Property Name="ExercisesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="MuscleGroup">
+          <Key>
+            <PropertyRef Name="MuscleGroupId" />
+          </Key>
+          <Property Name="MuscleGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileId" />
+          </Key>
+          <Property Name="ProfileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Bio" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FavouriteExercise" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Profile__UserId__1332DBDC" FromRole="Profile" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Set">
+          <Key>
+            <PropertyRef Name="SetId" />
+          </Key>
+          <Property Name="SetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Handle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="UserGuid" Type="Guid" />
+          <NavigationProperty Name="Profiles" Relationship="Self.FK__Profile__UserId__1332DBDC" FromRole="User" ToRole="Profile" />
+        </EntityType>
+        <EntityType Name="Workout">
+          <Key>
+            <PropertyRef Name="WorkoutId" />
+          </Key>
+          <Property Name="WorkoutId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="FK__Profile__UserId__1332DBDC">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Dev_DissertationEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Exercises" EntityType="Self.Exercise" />
+          <EntitySet Name="Exercises1" EntityType="Self.Exercis" />
+          <EntitySet Name="MuscleGroups" EntityType="Self.MuscleGroup" />
+          <EntitySet Name="Profiles" EntityType="Self.Profile" />
+          <EntitySet Name="Sets" EntityType="Self.Set" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Workouts" EntityType="Self.Workout" />
+          <AssociationSet Name="FK__Profile__UserId__1332DBDC" Association="Self.FK__Profile__UserId__1332DBDC">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Profile" EntitySet="Profiles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Dev_DissertationModelStoreContainer" CdmEntityContainer="Dev_DissertationEntities2">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exercises">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Exercise">
+              <MappingFragment StoreEntitySet="Exercise">
+                <ScalarProperty Name="ExerciseId" ColumnName="ExerciseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exercises1">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Exercis">
+              <MappingFragment StoreEntitySet="Exercises">
+                <ScalarProperty Name="ExercisesId" ColumnName="ExercisesId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MuscleGroups">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.MuscleGroup">
+              <MappingFragment StoreEntitySet="MuscleGroup">
+                <ScalarProperty Name="MuscleGroupId" ColumnName="MuscleGroupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profiles">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Profile">
+              <MappingFragment StoreEntitySet="Profile">
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Bio" ColumnName="Bio" />
+                <ScalarProperty Name="FavouriteExercise" ColumnName="FavouriteExercise" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sets">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Set">
+              <MappingFragment StoreEntitySet="Set">
+                <ScalarProperty Name="SetId" ColumnName="SetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Handle" ColumnName="Handle" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserGuid" ColumnName="UserGuid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Workouts">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Workout">
+              <MappingFragment StoreEntitySet="Workout">
+                <ScalarProperty Name="WorkoutId" ColumnName="WorkoutId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
