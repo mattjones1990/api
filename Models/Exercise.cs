@@ -15,5 +15,10 @@ namespace MyApi.Models
     public partial class Exercise
     {
         public int ExerciseId { get; set; }
+        public Nullable<int> SetId { get; set; }
+        public Nullable<int> GymExerciseId { get; set; }
+    
+        public virtual GymExercise GymExercise { get; set; }
+        public virtual Set Set { get; set; }
     }
 }

@@ -15,5 +15,14 @@ namespace MyApi.Models
     public partial class Comment
     {
         public int CommentId { get; set; }
+        public Nullable<int> UserId { get; set; }
+        public Nullable<int> WorkoutId { get; set; }
+        public Nullable<int> InResponseToComment { get; set; }
+        public int Upvotes { get; set; }
+        public int Downvotes { get; set; }
+        public Nullable<bool> Spam { get; set; }
+    
+        public virtual User User { get; set; }
+        public virtual Workout Workout { get; set; }
     }
 }

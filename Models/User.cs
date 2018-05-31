@@ -17,7 +17,9 @@ namespace MyApi.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.Comments = new HashSet<Comment>();
             this.Profiles = new HashSet<Profile>();
+            this.Workouts = new HashSet<Workout>();
         }
     
         public int UserId { get; set; }
@@ -25,9 +27,12 @@ namespace MyApi.Models
         public string Handle { get; set; }
         public string Password { get; set; }
         public Nullable<bool> Active { get; set; }
-        public Nullable<System.Guid> UserGuid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Profile> Profiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Workout> Workouts { get; set; }
     }
 }

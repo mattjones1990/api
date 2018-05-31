@@ -17,6 +17,10 @@ namespace MyApi.Controllers
         [System.Web.Http.HttpPost]
         public HttpResponseMessage CheckUser([FromBody] LoginCheck login)
         {
+            /*
+             * CheckIfSqliteInAzure
+             * CheckIfSqliteInAzureForDisclaimer
+             */
             HttpResponseMessage response = new HttpResponseMessage();
             bool active = false;
  
@@ -92,6 +96,7 @@ namespace MyApi.Controllers
                 response = Request.CreateResponse(HttpStatusCode.OK, login);
                 return response;
             }
+
             else
             {
                 login.Reason = "Nothing has happened, no legit reason input.";
@@ -113,19 +118,20 @@ namespace MyApi.Controllers
                 user.Password = login.Password;
                 user.Handle = login.Handle;
                 user.Active = login.checkActiveLogin(login.Active);
-                user.UserGuid = Guid.NewGuid();
+                
+                //user.UserGuid = Guid.NewGuid();
 
-                var loginSQLGuidCheck = from u
-                           in db.Users
-                           where u.UserGuid == user.UserGuid
-                           select u;
+                //var loginSQLGuidCheck = from u
+                //           in db.Users
+                //           where u.UserGuid == user.UserGuid
+                //           select u;
 
-                if (loginSQLGuidCheck.Count() > 0)
-                {
-                    loginCheck.Reason = "GUID already exists";
-                    response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
-                    return response;
-                }
+                //if (loginSQLGuidCheck.Count() > 0)
+                //{
+                //    loginCheck.Reason = "GUID already exists";
+                //    response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
+                //    return response;
+                //}
 
                 if (loginCheck.UserExists(user.Email))
                 {

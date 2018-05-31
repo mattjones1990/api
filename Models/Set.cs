@@ -14,6 +14,20 @@ namespace MyApi.Models
     
     public partial class Set
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Set()
+        {
+            this.Exercises = new HashSet<Exercise>();
+        }
+    
         public int SetId { get; set; }
+        public Nullable<int> WorkoutId { get; set; }
+        public System.DateTime DateOfSet { get; set; }
+        public decimal Weight { get; set; }
+        public int Reps { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Exercise> Exercises { get; set; }
+        public virtual Workout Workout { get; set; }
     }
 }

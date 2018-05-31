@@ -27,7 +27,7 @@ namespace MyApi.Models
     
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Exercise> Exercises { get; set; }
-        public virtual DbSet<Exercis> Exercises1 { get; set; }
+        public virtual DbSet<GymExercise> GymExercises { get; set; }
         public virtual DbSet<MuscleGroup> MuscleGroups { get; set; }
         public virtual DbSet<Profile> Profiles { get; set; }
         public virtual DbSet<Set> Sets { get; set; }

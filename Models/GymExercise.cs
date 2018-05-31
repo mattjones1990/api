@@ -12,24 +12,21 @@ namespace MyApi.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Workout
+    public partial class GymExercise
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Workout()
+        public GymExercise()
         {
-            this.Comments = new HashSet<Comment>();
-            this.Sets = new HashSet<Set>();
+            this.Exercises = new HashSet<Exercise>();
         }
     
-        public int WorkoutId { get; set; }
-        public Nullable<int> UserId { get; set; }
-        public System.DateTime DateOfWorkout { get; set; }
-        public bool Completed { get; set; }
+        public int GymExerciseId { get; set; }
+        public Nullable<int> MuscleGroupId { get; set; }
+        public string ExerciseName { get; set; }
+        public Nullable<bool> BigFour { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Comment> Comments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Set> Sets { get; set; }
-        public virtual User User { get; set; }
+        public virtual ICollection<Exercise> Exercises { get; set; }
+        public virtual MuscleGroup MuscleGroup { get; set; }
     }
 }

@@ -14,6 +14,16 @@ namespace MyApi.Models
     
     public partial class MuscleGroup
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public MuscleGroup()
+        {
+            this.GymExercises = new HashSet<GymExercise>();
+        }
+    
         public int MuscleGroupId { get; set; }
+        public string MuscleGroupName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GymExercise> GymExercises { get; set; }
     }
 }

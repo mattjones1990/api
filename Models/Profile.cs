@@ -20,6 +20,7 @@ namespace MyApi.Models
         public string Bio { get; set; }
         public string FavouriteExercise { get; set; }
         public System.DateTime DateOfBirth { get; set; }
+        public Nullable<bool> Private { get; set; }
     
         public virtual User User { get; set; }
     }
