@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Dev_DissertationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="WorkoutId" Type="int" />
+          <Property Name="InResponseToComment" Type="int" />
+          <Property Name="Upvotes" Type="int" Nullable="false" />
+          <Property Name="Downvotes" Type="int" Nullable="false" />
+          <Property Name="Spam" Type="bit" />
+        </EntityType>
+        <EntityType Name="Exercise">
+          <Key>
+            <PropertyRef Name="ExerciseId" />
+          </Key>
+          <Property Name="ExerciseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SetId" Type="int" />
+          <Property Name="GymExerciseId" Type="int" />
+        </EntityType>
+        <EntityType Name="GymExercise">
+          <Key>
+            <PropertyRef Name="GymExerciseId" />
+          </Key>
+          <Property Name="GymExerciseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MuscleGroupId" Type="int" />
+          <Property Name="ExerciseName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="BigFour" Type="bit" />
+        </EntityType>
+        <EntityType Name="MuscleGroup">
+          <Key>
+            <PropertyRef Name="MuscleGroupId" />
+          </Key>
+          <Property Name="MuscleGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MuscleGroupName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileId" />
+          </Key>
+          <Property Name="ProfileId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Bio" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="FavouriteExercise" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+          <Property Name="Private" Type="bit" />
+        </EntityType>
+        <EntityType Name="Set">
+          <Key>
+            <PropertyRef Name="SetId" />
+          </Key>
+          <Property Name="SetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkoutId" Type="int" />
+          <Property Name="DateOfSet" Type="datetime" Nullable="false" />
+          <Property Name="Weight" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="Reps" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar(max)" Nullable="false" />
+          <Property Name="Handle" Type="varchar(max)" Nullable="false" />
+          <Property Name="Password" Type="varchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Workout">
+          <Key>
+            <PropertyRef Name="WorkoutId" />
+          </Key>
+          <Property Name="WorkoutId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="DateOfWorkout" Type="datetime" Nullable="false" />
+          <Property Name="Completed" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Comment__UserId__0CA5D9DE">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Workout__0D99FE17">
+          <End Role="Workout" Type="Self.Workout" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workout">
+              <PropertyRef Name="WorkoutId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="WorkoutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Exercise__GymExe__190BB0C3">
+          <End Role="GymExercise" Type="Self.GymExercise" Multiplicity="0..1" />
+          <End Role="Exercise" Type="Self.Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GymExercise">
+              <PropertyRef Name="GymExerciseId" />
+            </Principal>
+            <Dependent Role="Exercise">
+              <PropertyRef Name="GymExerciseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Exercise__SetId__18178C8A">
+          <End Role="Set" Type="Self.Set" Multiplicity="0..1" />
+          <End Role="Exercise" Type="Self.Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Set">
+              <PropertyRef Name="SetId" />
+            </Principal>
+            <Dependent Role="Exercise">
+              <PropertyRef Name="SetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GymExerci__Muscl__153B1FDF">
+          <End Role="MuscleGroup" Type="Self.MuscleGroup" Multiplicity="0..1" />
+          <End Role="GymExercise" Type="Self.GymExercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MuscleGroup">
+              <PropertyRef Name="MuscleGroupId" />
+            </Principal>
+            <Dependent Role="GymExercise">
+              <PropertyRef Name="MuscleGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profile__UserId__06ED0088">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Set__WorkoutId__10766AC2">
+          <End Role="Workout" Type="Self.Workout" Multiplicity="0..1" />
+          <End Role="Set" Type="Self.Set" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workout">
+              <PropertyRef Name="WorkoutId" />
+            </Principal>
+            <Dependent Role="Set">
+              <PropertyRef Name="WorkoutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Workout__UserId__09C96D33">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Workout" Type="Self.Workout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Workout">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Dev_DissertationModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exercise" EntityType="Self.Exercise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GymExercise" EntityType="Self.GymExercise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MuscleGroup" EntityType="Self.MuscleGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profile" EntityType="Self.Profile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Set" EntityType="Self.Set" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Workout" EntityType="Self.Workout" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Comment__UserId__0CA5D9DE" Association="Self.FK__Comment__UserId__0CA5D9DE">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Workout__0D99FE17" Association="Self.FK__Comment__Workout__0D99FE17">
+            <End Role="Workout" EntitySet="Workout" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Exercise__GymExe__190BB0C3" Association="Self.FK__Exercise__GymExe__190BB0C3">
+            <End Role="GymExercise" EntitySet="GymExercise" />
+            <End Role="Exercise" EntitySet="Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Exercise__SetId__18178C8A" Association="Self.FK__Exercise__SetId__18178C8A">
+            <End Role="Set" EntitySet="Set" />
+            <End Role="Exercise" EntitySet="Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GymExerci__Muscl__153B1FDF" Association="Self.FK__GymExerci__Muscl__153B1FDF">
+            <End Role="MuscleGroup" EntitySet="MuscleGroup" />
+            <End Role="GymExercise" EntitySet="GymExercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profile__UserId__06ED0088" Association="Self.FK__Profile__UserId__06ED0088">
+            <End Role="User" EntitySet="User" />
+            <End Role="Profile" EntitySet="Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Set__WorkoutId__10766AC2" Association="Self.FK__Set__WorkoutId__10766AC2">
+            <End Role="Workout" EntitySet="Workout" />
+            <End Role="Set" EntitySet="Set" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Workout__UserId__09C96D33" Association="Self.FK__Workout__UserId__09C96D33">
+            <End Role="User" EntitySet="User" />
+            <End Role="Workout" EntitySet="Workout" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Dev_DissertationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="WorkoutId" Type="Int32" />
+          <Property Name="InResponseToComment" Type="Int32" />
+          <Property Name="Upvotes" Type="Int32" Nullable="false" />
+          <Property Name="Downvotes" Type="Int32" Nullable="false" />
+          <Property Name="Spam" Type="Boolean" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Comment__UserId__0CA5D9DE" FromRole="Comment" ToRole="User" />
+          <NavigationProperty Name="Workout" Relationship="Self.FK__Comment__Workout__0D99FE17" FromRole="Comment" ToRole="Workout" />
+        </EntityType>
+        <EntityType Name="Exercise">
+          <Key>
+            <PropertyRef Name="ExerciseId" />
+          </Key>
+          <Property Name="ExerciseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SetId" Type="Int32" />
+          <Property Name="GymExerciseId" Type="Int32" />
+          <NavigationProperty Name="GymExercise" Relationship="Self.FK__Exercise__GymExe__190BB0C3" FromRole="Exercise" ToRole="GymExercise" />
+          <NavigationProperty Name="Set" Relationship="Self.FK__Exercise__SetId__18178C8A" FromRole="Exercise" ToRole="Set" />
+        </EntityType>
+        <EntityType Name="GymExercise">
+          <Key>
+            <PropertyRef Name="GymExerciseId" />
+          </Key>
+          <Property Name="GymExerciseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MuscleGroupId" Type="Int32" />
+          <Property Name="ExerciseName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BigFour" Type="Boolean" />
+          <NavigationProperty Name="Exercises" Relationship="Self.FK__Exercise__GymExe__190BB0C3" FromRole="GymExercise" ToRole="Exercise" />
+          <NavigationProperty Name="MuscleGroup" Relationship="Self.FK__GymExerci__Muscl__153B1FDF" FromRole="GymExercise" ToRole="MuscleGroup" />
+        </EntityType>
+        <EntityType Name="MuscleGroup">
+          <Key>
+            <PropertyRef Name="MuscleGroupId" />
+          </Key>
+          <Property Name="MuscleGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MuscleGroupName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="GymExercises" Relationship="Self.FK__GymExerci__Muscl__153B1FDF" FromRole="MuscleGroup" ToRole="GymExercise" />
+        </EntityType>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileId" />
+          </Key>
+          <Property Name="ProfileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Bio" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FavouriteExercise" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Private" Type="Boolean" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Profile__UserId__06ED0088" FromRole="Profile" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Set">
+          <Key>
+            <PropertyRef Name="SetId" />
+          </Key>
+          <Property Name="SetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkoutId" Type="Int32" />
+          <Property Name="DateOfSet" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Weight" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="Reps" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Exercises" Relationship="Self.FK__Exercise__SetId__18178C8A" FromRole="Set" ToRole="Exercise" />
+          <NavigationProperty Name="Workout" Relationship="Self.FK__Set__WorkoutId__10766AC2" FromRole="Set" ToRole="Workout" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Handle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__UserId__0CA5D9DE" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Profiles" Relationship="Self.FK__Profile__UserId__06ED0088" FromRole="User" ToRole="Profile" />
+          <NavigationProperty Name="Workouts" Relationship="Self.FK__Workout__UserId__09C96D33" FromRole="User" ToRole="Workout" />
+        </EntityType>
+        <EntityType Name="Workout">
+          <Key>
+            <PropertyRef Name="WorkoutId" />
+          </Key>
+          <Property Name="WorkoutId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="DateOfWorkout" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Completed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__Workout__0D99FE17" FromRole="Workout" ToRole="Comment" />
+          <NavigationProperty Name="Sets" Relationship="Self.FK__Set__WorkoutId__10766AC2" FromRole="Workout" ToRole="Set" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Workout__UserId__09C96D33" FromRole="Workout" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__Comment__UserId__0CA5D9DE">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Workout__0D99FE17">
+          <End Role="Workout" Type="Self.Workout" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workout">
+              <PropertyRef Name="WorkoutId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="WorkoutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Exercise__GymExe__190BB0C3">
+          <End Role="GymExercise" Type="Self.GymExercise" Multiplicity="0..1" />
+          <End Role="Exercise" Type="Self.Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GymExercise">
+              <PropertyRef Name="GymExerciseId" />
+            </Principal>
+            <Dependent Role="Exercise">
+              <PropertyRef Name="GymExerciseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Exercise__SetId__18178C8A">
+          <End Role="Set" Type="Self.Set" Multiplicity="0..1" />
+          <End Role="Exercise" Type="Self.Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Set">
+              <PropertyRef Name="SetId" />
+            </Principal>
+            <Dependent Role="Exercise">
+              <PropertyRef Name="SetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GymExerci__Muscl__153B1FDF">
+          <End Role="MuscleGroup" Type="Self.MuscleGroup" Multiplicity="0..1" />
+          <End Role="GymExercise" Type="Self.GymExercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MuscleGroup">
+              <PropertyRef Name="MuscleGroupId" />
+            </Principal>
+            <Dependent Role="GymExercise">
+              <PropertyRef Name="MuscleGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profile__UserId__06ED0088">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Set__WorkoutId__10766AC2">
+          <End Role="Workout" Type="Self.Workout" Multiplicity="0..1" />
+          <End Role="Set" Type="Self.Set" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workout">
+              <PropertyRef Name="WorkoutId" />
+            </Principal>
+            <Dependent Role="Set">
+              <PropertyRef Name="WorkoutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Workout__UserId__09C96D33">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Workout" Type="Self.Workout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Workout">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Dev_DissertationEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Exercises" EntityType="Self.Exercise" />
+          <EntitySet Name="GymExercises" EntityType="Self.GymExercise" />
+          <EntitySet Name="MuscleGroups" EntityType="Self.MuscleGroup" />
+          <EntitySet Name="Profiles" EntityType="Self.Profile" />
+          <EntitySet Name="Sets" EntityType="Self.Set" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Workouts" EntityType="Self.Workout" />
+          <AssociationSet Name="FK__Comment__UserId__0CA5D9DE" Association="Self.FK__Comment__UserId__0CA5D9DE">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Workout__0D99FE17" Association="Self.FK__Comment__Workout__0D99FE17">
+            <End Role="Workout" EntitySet="Workouts" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Exercise__GymExe__190BB0C3" Association="Self.FK__Exercise__GymExe__190BB0C3">
+            <End Role="GymExercise" EntitySet="GymExercises" />
+            <End Role="Exercise" EntitySet="Exercises" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Exercise__SetId__18178C8A" Association="Self.FK__Exercise__SetId__18178C8A">
+            <End Role="Set" EntitySet="Sets" />
+            <End Role="Exercise" EntitySet="Exercises" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GymExerci__Muscl__153B1FDF" Association="Self.FK__GymExerci__Muscl__153B1FDF">
+            <End Role="MuscleGroup" EntitySet="MuscleGroups" />
+            <End Role="GymExercise" EntitySet="GymExercises" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profile__UserId__06ED0088" Association="Self.FK__Profile__UserId__06ED0088">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Profile" EntitySet="Profiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Set__WorkoutId__10766AC2" Association="Self.FK__Set__WorkoutId__10766AC2">
+            <End Role="Workout" EntitySet="Workouts" />
+            <End Role="Set" EntitySet="Sets" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Workout__UserId__09C96D33" Association="Self.FK__Workout__UserId__09C96D33">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Workout" EntitySet="Workouts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Dev_DissertationModelStoreContainer" CdmEntityContainer="Dev_DissertationEntities3">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="WorkoutId" ColumnName="WorkoutId" />
+                <ScalarProperty Name="InResponseToComment" ColumnName="InResponseToComment" />
+                <ScalarProperty Name="Upvotes" ColumnName="Upvotes" />
+                <ScalarProperty Name="Downvotes" ColumnName="Downvotes" />
+                <ScalarProperty Name="Spam" ColumnName="Spam" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exercises">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Exercise">
+              <MappingFragment StoreEntitySet="Exercise">
+                <ScalarProperty Name="ExerciseId" ColumnName="ExerciseId" />
+                <ScalarProperty Name="SetId" ColumnName="SetId" />
+                <ScalarProperty Name="GymExerciseId" ColumnName="GymExerciseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GymExercises">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.GymExercise">
+              <MappingFragment StoreEntitySet="GymExercise">
+                <ScalarProperty Name="GymExerciseId" ColumnName="GymExerciseId" />
+                <ScalarProperty Name="MuscleGroupId" ColumnName="MuscleGroupId" />
+                <ScalarProperty Name="ExerciseName" ColumnName="ExerciseName" />
+                <ScalarProperty Name="BigFour" ColumnName="BigFour" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MuscleGroups">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.MuscleGroup">
+              <MappingFragment StoreEntitySet="MuscleGroup">
+                <ScalarProperty Name="MuscleGroupId" ColumnName="MuscleGroupId" />
+                <ScalarProperty Name="MuscleGroupName" ColumnName="MuscleGroupName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profiles">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Profile">
+              <MappingFragment StoreEntitySet="Profile">
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Bio" ColumnName="Bio" />
+                <ScalarProperty Name="FavouriteExercise" ColumnName="FavouriteExercise" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Private" ColumnName="Private" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sets">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Set">
+              <MappingFragment StoreEntitySet="Set">
+                <ScalarProperty Name="SetId" ColumnName="SetId" />
+                <ScalarProperty Name="WorkoutId" ColumnName="WorkoutId" />
+                <ScalarProperty Name="DateOfSet" ColumnName="DateOfSet" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Reps" ColumnName="Reps" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Handle" ColumnName="Handle" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Workouts">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.Workout">
+              <MappingFragment StoreEntitySet="Workout">
+                <ScalarProperty Name="WorkoutId" ColumnName="WorkoutId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DateOfWorkout" ColumnName="DateOfWorkout" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
