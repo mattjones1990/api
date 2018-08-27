@@ -50,6 +50,9 @@ namespace MyApi.Controllers
                 }
                 else if (loginSQL.Count() == 1)
                 {
+                    var singleUser = loginSQL.FirstOrDefault();
+                    login.UserGuid = singleUser.UserGuid;
+                   // login.UserGuid = loqinSQL[0].UserGuid;
                     login.Worked = true;
                     login.Reason = "One record found.";
                 }
@@ -118,20 +121,7 @@ namespace MyApi.Controllers
                 user.Password = login.Password;
                 user.Handle = login.Handle;
                 user.Active = login.checkActiveLogin(login.Active);
-                
-                //user.UserGuid = Guid.NewGuid();
-
-                //var loginSQLGuidCheck = from u
-                //           in db.Users
-                //           where u.UserGuid == user.UserGuid
-                //           select u;
-
-                //if (loginSQLGuidCheck.Count() > 0)
-                //{
-                //    loginCheck.Reason = "GUID already exists";
-                //    response = Request.CreateResponse(HttpStatusCode.BadRequest, loginCheck);
-                //    return response;
-                //}
+                user.UserGuid = Guid.NewGuid();
 
                 if (loginCheck.UserExists(user.Email))
                 {
@@ -153,6 +143,25 @@ namespace MyApi.Controllers
                 {
                     loginCheck.Reason = "User created successfully.";
                     response = Request.CreateResponse(HttpStatusCode.Created, loginCheck);
+                    loginCheck.UserGuid = user.UserGuid;
+
+                    //Get userId based on Guid
+                    var users = from u in db.Users where u.UserGuid == user.UserGuid select u;
+                    var individualUser = users.FirstOrDefault();
+
+                    //Add default profile 
+                    OnlineProfile onlineProfile = new OnlineProfile()
+                    {
+                        UserId = individualUser.UserId,
+                        Age = 99,
+                        Location = "N/A",
+                        Bio = "Please update bio.",
+                        Name = "Name"
+                    };
+
+                    db.OnlineProfiles.Add(onlineProfile);
+                    db.SaveChanges();
+
                     return response;
                 }
                 else

@@ -17,22 +17,20 @@ namespace MyApi.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Comments = new HashSet<Comment>();
-            this.Profiles = new HashSet<Profile>();
-            this.Workouts = new HashSet<Workout>();
+            this.OnlineProfiles = new HashSet<OnlineProfile>();
+            this.OnlineWorkouts = new HashSet<OnlineWorkout>();
         }
     
         public int UserId { get; set; }
+        public System.Guid UserGuid { get; set; }
         public string Email { get; set; }
         public string Handle { get; set; }
         public string Password { get; set; }
         public Nullable<bool> Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<OnlineProfile> OnlineProfiles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Profile> Profiles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Workout> Workouts { get; set; }
+        public virtual ICollection<OnlineWorkout> OnlineWorkouts { get; set; }
     }
 }
