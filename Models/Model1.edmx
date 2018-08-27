@@ -19,10 +19,21 @@
           </Key>
           <Property Name="OnlineProfileId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="Bio" Type="nvarchar(max)" />
+          <Property Name="Bio" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Age" Type="int" />
           <Property Name="Location" Type="nvarchar" MaxLength="100" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="OnlineSet">
+          <Key>
+            <PropertyRef Name="OnlineProfileId" />
+          </Key>
+          <Property Name="OnlineProfileId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExerciseName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Handle" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Weight" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="Reps" Type="int" />
+          <Property Name="Date" Type="datetime" />
         </EntityType>
         <EntityType Name="OnlineWorkout">
           <Key>
@@ -45,7 +56,7 @@
           <Property Name="Password" Type="varchar(max)" Nullable="false" />
           <Property Name="Active" Type="bit" />
         </EntityType>
-        <Association Name="FK_OnlineProfileId">
+        <Association Name="FK_OnlineProfile_UserGuid">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="OnlineProfile" Type="Self.OnlineProfile" Multiplicity="*" />
           <ReferentialConstraint>
@@ -72,9 +83,10 @@
         <EntityContainer Name="Dev_DissertationModelStoreContainer">
           <EntitySet Name="Audit" EntityType="Self.Audit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OnlineProfile" EntityType="Self.OnlineProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OnlineSet" EntityType="Self.OnlineSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OnlineWorkout" EntityType="Self.OnlineWorkout" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_OnlineProfileId" Association="Self.FK_OnlineProfileId">
+          <AssociationSet Name="FK_OnlineProfile_UserGuid" Association="Self.FK_OnlineProfile_UserGuid">
             <End Role="User" EntitySet="User" />
             <End Role="OnlineProfile" EntitySet="OnlineProfile" />
           </AssociationSet>
@@ -102,11 +114,22 @@
           </Key>
           <Property Name="OnlineProfileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Bio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Bio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Age" Type="Int32" />
           <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="Self.FK_OnlineProfileId" FromRole="OnlineProfile" ToRole="User" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_OnlineProfile_UserGuid" FromRole="OnlineProfile" ToRole="User" />
+        </EntityType>
+        <EntityType Name="OnlineSet">
+          <Key>
+            <PropertyRef Name="OnlineProfileId" />
+          </Key>
+          <Property Name="OnlineProfileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExerciseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Handle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Weight" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="Reps" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="OnlineWorkout">
           <Key>
@@ -129,10 +152,10 @@
           <Property Name="Handle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Active" Type="Boolean" />
-          <NavigationProperty Name="OnlineProfiles" Relationship="Self.FK_OnlineProfileId" FromRole="User" ToRole="OnlineProfile" />
+          <NavigationProperty Name="OnlineProfiles" Relationship="Self.FK_OnlineProfile_UserGuid" FromRole="User" ToRole="OnlineProfile" />
           <NavigationProperty Name="OnlineWorkouts" Relationship="Self.FK_OnlineWorkout_UserGuid" FromRole="User" ToRole="OnlineWorkout" />
         </EntityType>
-        <Association Name="FK_OnlineProfileId">
+        <Association Name="FK_OnlineProfile_UserGuid">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="OnlineProfile" Type="Self.OnlineProfile" Multiplicity="*" />
           <ReferentialConstraint>
@@ -156,12 +179,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Dev_DissertationEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Dev_DissertationEntities3" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Audits" EntityType="Self.Audit" />
           <EntitySet Name="OnlineProfiles" EntityType="Self.OnlineProfile" />
+          <EntitySet Name="OnlineSets" EntityType="Self.OnlineSet" />
           <EntitySet Name="OnlineWorkouts" EntityType="Self.OnlineWorkout" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_OnlineProfileId" Association="Self.FK_OnlineProfileId">
+          <AssociationSet Name="FK_OnlineProfile_UserGuid" Association="Self.FK_OnlineProfile_UserGuid">
             <End Role="User" EntitySet="Users" />
             <End Role="OnlineProfile" EntitySet="OnlineProfiles" />
           </AssociationSet>
@@ -175,7 +199,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Dev_DissertationModelStoreContainer" CdmEntityContainer="Dev_DissertationEntities1">
+        <EntityContainerMapping StorageEntityContainer="Dev_DissertationModelStoreContainer" CdmEntityContainer="Dev_DissertationEntities3">
           <EntitySetMapping Name="Audits">
             <EntityTypeMapping TypeName="Dev_DissertationModel.Audit">
               <MappingFragment StoreEntitySet="Audit">
@@ -194,6 +218,18 @@
                 <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OnlineSets">
+            <EntityTypeMapping TypeName="Dev_DissertationModel.OnlineSet">
+              <MappingFragment StoreEntitySet="OnlineSet">
+                <ScalarProperty Name="OnlineProfileId" ColumnName="OnlineProfileId" />
+                <ScalarProperty Name="ExerciseName" ColumnName="ExerciseName" />
+                <ScalarProperty Name="Handle" ColumnName="Handle" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Reps" ColumnName="Reps" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -27,6 +27,7 @@ namespace MyApi.Models
     
         public virtual DbSet<Audit> Audits { get; set; }
         public virtual DbSet<OnlineProfile> OnlineProfiles { get; set; }
+        public virtual DbSet<OnlineSet> OnlineSets { get; set; }
         public virtual DbSet<OnlineWorkout> OnlineWorkouts { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }

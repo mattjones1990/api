@@ -110,5 +110,19 @@ namespace MyApi.Controllers
             response = Request.CreateResponse(HttpStatusCode.OK, newProfileObject);
             return response;
         }
+
+
+        [System.Web.Http.Route("api/OnlineProfile/GetProfilesByHandle")]
+        [System.Web.Http.HttpPost]
+        public HttpResponseMessage GetOnlineProfileForUsersByHandle([FromBody] ProfileHandles handle)
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            var h = handle.Handle;
+            var users = (from u in db.Users where u.Handle.Contains(h) select u.Handle).ToList();
+            handle.Handles = users;
+
+            response = Request.CreateResponse(HttpStatusCode.OK, handle);
+            return response;
+        }
     }
 }
