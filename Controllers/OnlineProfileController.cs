@@ -114,7 +114,7 @@ namespace MyApi.Controllers
 
         [System.Web.Http.Route("api/OnlineProfile/GetProfilesByHandle")]
         [System.Web.Http.HttpPost]
-        public HttpResponseMessage GetOnlineProfileForUsersByHandle([FromBody] ProfileHandles handle)
+        public HttpResponseMessage GetOnlineProfilesForUsersByHandle([FromBody] ProfileHandles handle)
         {
             HttpResponseMessage response = new HttpResponseMessage();
             var h = handle.Handle;

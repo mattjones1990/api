@@ -26,12 +26,12 @@
         </EntityType>
         <EntityType Name="OnlineSet">
           <Key>
-            <PropertyRef Name="OnlineProfileId" />
+            <PropertyRef Name="OnlineSetId" />
           </Key>
-          <Property Name="OnlineProfileId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OnlineSetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ExerciseName" Type="nvarchar" MaxLength="50" />
           <Property Name="Handle" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Weight" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="Weight" Type="decimal" Precision="5" Scale="2" />
           <Property Name="Reps" Type="int" />
           <Property Name="Date" Type="datetime" />
         </EntityType>
@@ -122,12 +122,12 @@
         </EntityType>
         <EntityType Name="OnlineSet">
           <Key>
-            <PropertyRef Name="OnlineProfileId" />
+            <PropertyRef Name="OnlineSetId" />
           </Key>
-          <Property Name="OnlineProfileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OnlineSetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ExerciseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Handle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Weight" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="Weight" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="Reps" Type="Int32" />
           <Property Name="Date" Type="DateTime" Precision="3" />
         </EntityType>
@@ -179,7 +179,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Dev_DissertationEntities3" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Dev_DissertationEntities6" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Audits" EntityType="Self.Audit" />
           <EntitySet Name="OnlineProfiles" EntityType="Self.OnlineProfile" />
           <EntitySet Name="OnlineSets" EntityType="Self.OnlineSet" />
@@ -199,7 +199,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Dev_DissertationModelStoreContainer" CdmEntityContainer="Dev_DissertationEntities3">
+        <EntityContainerMapping StorageEntityContainer="Dev_DissertationModelStoreContainer" CdmEntityContainer="Dev_DissertationEntities6">
           <EntitySetMapping Name="Audits">
             <EntityTypeMapping TypeName="Dev_DissertationModel.Audit">
               <MappingFragment StoreEntitySet="Audit">
@@ -224,7 +224,7 @@
           <EntitySetMapping Name="OnlineSets">
             <EntityTypeMapping TypeName="Dev_DissertationModel.OnlineSet">
               <MappingFragment StoreEntitySet="OnlineSet">
-                <ScalarProperty Name="OnlineProfileId" ColumnName="OnlineProfileId" />
+                <ScalarProperty Name="OnlineSetId" ColumnName="OnlineSetId" />
                 <ScalarProperty Name="ExerciseName" ColumnName="ExerciseName" />
                 <ScalarProperty Name="Handle" ColumnName="Handle" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />

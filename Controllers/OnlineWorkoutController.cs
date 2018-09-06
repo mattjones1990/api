@@ -55,10 +55,8 @@ namespace MyApi.Controllers
                     workout.Reason = "Worked Correctly";
                 }
             }
-
             response = Request.CreateResponse(HttpStatusCode.OK, workout);
             return response;
-
         }
 
         [System.Web.Http.Route("api/OnlineWorkout/GetWorkouts")]
@@ -89,7 +87,6 @@ namespace MyApi.Controllers
 
             response = Request.CreateResponse(HttpStatusCode.OK, workouts);
             return response;
-
         }
 
         [System.Web.Http.Route("api/OnlineWorkout/GetWorkoutsForUser")]
@@ -122,34 +119,5 @@ namespace MyApi.Controllers
             return response;
 
         }
-
-
-
-        //// GET: api/OnlineWorkout
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET: api/OnlineWorkout/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST: api/OnlineWorkout
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        //// PUT: api/OnlineWorkout/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE: api/OnlineWorkout/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

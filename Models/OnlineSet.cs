@@ -14,7 +14,7 @@ namespace MyApi.Models
     
     public partial class OnlineSet
     {
-        public int OnlineProfileId { get; set; }
+        public int OnlineSetId { get; set; }
         public string ExerciseName { get; set; }
         public string Handle { get; set; }
         public Nullable<decimal> Weight { get; set; }

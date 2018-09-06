@@ -17,10 +17,6 @@ namespace MyApi.Controllers
         [System.Web.Http.HttpPost]
         public HttpResponseMessage CheckUser([FromBody] LoginCheck login)
         {
-            /*
-             * CheckIfSqliteInAzure
-             * CheckIfSqliteInAzureForDisclaimer
-             */
             HttpResponseMessage response = new HttpResponseMessage();
             bool active = false;
  
@@ -52,7 +48,6 @@ namespace MyApi.Controllers
                 {
                     var singleUser = loginSQL.FirstOrDefault();
                     login.UserGuid = singleUser.UserGuid;
-                   // login.UserGuid = loqinSQL[0].UserGuid;
                     login.Worked = true;
                     login.Reason = "One record found.";
                 }
@@ -66,8 +61,8 @@ namespace MyApi.Controllers
                 return response;
             }
 
-            //Check if the credentials are stored on the Azure Db, if not, go to disclaimer page...Register > Login or Disclaimer
-            else if (login.Reason == "CheckIfSqliteInAzureForDisclaimer")
+            //Check if the credentials are stored on the Azure Db
+            else if (login.Reason == "CheckDuplicates")
             {
                 var loginSQLEmailCheck = from u
                            in db.Users

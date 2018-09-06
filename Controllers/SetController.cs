@@ -30,9 +30,10 @@ namespace MyApi.Controllers
             db.OnlineSets.Add(newSet);
             db.SaveChanges();
 
+            db.Database.ExecuteSqlCommandAsync("declare @handle nvarchar(50) = '" + set.Handle + "' delete from onlineset where OnlineSetId in ( select os.OnlineSetId from onlineset os join ( select OnlineSetId, exercisename, handle, weight, reps, date, RANK() OVER (PARTITION BY exercisename, handle, weight, reps ORDER BY date DESC) AS Ranking from onlineset where handle = @handle ) toBeRemoved on os.OnlineSetId = toBeRemoved.OnlineSetId and toBeRemoved.Ranking > 1 )");
+
             response = Request.CreateResponse(HttpStatusCode.OK, set);
             return response;
-
         }
 
         [System.Web.Http.Route("api/OnlineSet/GetSets")]
@@ -73,7 +74,6 @@ namespace MyApi.Controllers
                 };
                 setOnline.Add(s);
             }
-
 
             response = Request.CreateResponse(HttpStatusCode.OK, setOnline);
             return response;
